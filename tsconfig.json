@@ -47,6 +47,9 @@
       "@types/*": [
         "types/*"
       ],
+      "@pages/*": [
+        "pages/*"
+      ],
       "@utils/*": [
         "utils/*"
       ]
