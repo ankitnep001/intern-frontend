@@ -1,62 +1,64 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginFormProps } from '@interface/global.interface';
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { instance } from "services/instance";
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from 'services/instance';
+import * as yup from 'yup';
 
+//validation from yup 
+const validationSchema = yup.object({
+    email: yup.string().required('Email is required').matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 'Invalid email format'),
+    password: yup.string().required("Password is required")
+        .min(8, "Password length should be at least 8 characters")
+        .max(16, "Password cannot exceed more than 16 characters")
+})
 const LoginForm = () => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [_getData, setGetData] = useState<any>([]);
 
-    //handle email change
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
-    };
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormProps>({
+        defaultValues: {
+            email: "",
+            password: ""
+        },
+        resolver: yupResolver(validationSchema)
+    });
 
-    //handle password change
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
-
-    //handle Submit
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        console.log("email:", email);
-        console.log("password:", password);
-
-        setEmail("");
-        setPassword("");
-    }
-
+    //show and hide password handler
     const handlePasswordToggle = () => {
         setShowPassword(!showPassword)
     }
+    const navigate = useNavigate();
+    const onSubmit: SubmitHandler<LoginFormProps> = (data) => {
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        instance({
+        axiosInstance({
             method: 'post',
             url: '/auth',
             data: {
-                username: email,
-                password: password
+                username: data.email,
+                password: data.password
             }
         }).then((response) => {
-            setGetData(response.data);
-            console.log(response)
+            // console.log(response);
+
+            localStorage.setItem('accessTokenInternProject', response.data.data.tokens.accessToken);
+            navigate('/admin')
+            console.log(response);
         })
             .catch(error => console.log(error));
-    }
+    };
+
 
     return (
-        <form onSubmit={handleSubmit} className="flex justify-center items-center h-[86vh]">
+        <form onSubmit={handleSubmit(onSubmit)}
+            className="flex justify-center items-center h-[86vh]" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
 
-                <div className=" relative mb-4">
+                <div className=" relative ">
                     <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
                         Email:
                     </label>
@@ -65,8 +67,8 @@ const LoginForm = () => {
                         <input
                             type="email"
                             id="email"
-                            value={email}
-                            onChange={handleEmailChange}
+
+                            {...register("email")}
                             placeholder="Enter your email"
                             className="w-full  pl-10 pr-3 py-2 border   rounded-md focus:outline-none focus:ring focus:border-blue-500"
                             required
@@ -74,7 +76,11 @@ const LoginForm = () => {
                     </div>
                 </div>
 
-                <div className="relative  mb-4">
+                {errors.email &&
+                    <span className="text-red-500 text-sm mt-1">{errors.email?.message}</span>
+                }
+
+                <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
                         Password:
                     </label>
@@ -83,9 +89,9 @@ const LoginForm = () => {
                         <input
                             type={showPassword ? "text" : "password"}
                             id="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                            autoComplete="on"
+
+                            {...register("password")}
+                            autoComplete="off"
                             placeholder="Enter your Password"
                             className="w-full  pl-10 pr-3 py-2 border   rounded-md focus:outline-none focus:ring focus:border-blue-500"
                             required
@@ -96,10 +102,12 @@ const LoginForm = () => {
                     </div>
                 </div>
 
+                {errors.password &&
+                    <span className="text-red-500 text-sm mt-1">{errors.password?.message}</span>
+                }
                 <button
                     type="submit"
-                    onClick={handleClick}
-                    className="w-full bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                    className="w-full bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mt-2"
                 >
                     Login
                 </button>
