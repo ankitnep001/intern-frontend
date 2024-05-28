@@ -5,7 +5,7 @@ interface MenuProps {
 }
 const Navbar: React.FC<MenuProps> = ({ menu }) => {
     return (
-        <nav className="bg-gray-800 text-white">
+        <nav className=" ">
             <ul className="hidden md:flex justify-center items-center gap-x-5 py-2">
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="about">About</Link></li>
