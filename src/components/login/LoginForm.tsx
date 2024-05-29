@@ -27,10 +27,6 @@ const LoginForm = () => {
         resolver: yupResolver(validationSchema)
     });
 
-    //show and hide password handler
-    const handlePasswordToggle = () => {
-        setShowPassword(!showPassword)
-    }
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<LoginFormProps> = (data) => {
 
@@ -51,10 +47,13 @@ const LoginForm = () => {
             .catch(error => console.log(error));
     };
 
-
+    //show and hide password handler
+    const handlePasswordToggle = () => {
+        setShowPassword(!showPassword)
+    }
     return (
         <form onSubmit={handleSubmit(onSubmit)}
-            className="flex justify-center items-center h-[86vh]" noValidate>
+            className=" flex justify-center items-center h-[86vh]" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
 
