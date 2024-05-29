@@ -1,4 +1,3 @@
-
 const AdminTable = () => {
     return (
         <div>AdminTable</div>
