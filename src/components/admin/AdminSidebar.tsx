@@ -28,7 +28,7 @@ const AdminSidebar = () => {
 
     };
     return (
-        <aside className='h-screen w-72 bg-[#fffcfc] px-4'>
+        <aside className='h-screen w-72 bg-blue-300 px-4 shadow-lg'>
             <Logo />
             <ul className="mt-4 font-medium w-full  space-y-2">
 
@@ -44,12 +44,12 @@ const AdminSidebar = () => {
                 <li onClick={handleToggleDropdown} className=' flex items-center cursor-pointer gap-x-2'>
                     <span className={` transition-transform duration-300 transform ${isRotated ? 'rotate-90' : ''}`}><MdOutlineSettings size={22} /></span>
                     Setting
-                    <span >{showDropdown ? <MdOutlineArrowDropUp size={22} /> : <MdOutlineArrowDropDown size={22} />}</span>
+                    <span className={`transition-transform duration-300`}>{showDropdown ? <MdOutlineArrowDropUp size={22} /> : <MdOutlineArrowDropDown size={22} />}</span>
                 </li>
                 {showDropdown && (
                     <div className="dropdown-content px-6  my-2">
                         <li className='flex items-center cursor-pointer gap-x-2 pb-2'><span><RiLockPasswordLine size={22} /></span><Link to='/admin/changepassword'>Change Password</Link></li>
-                        <li onClick={handleLogout} className='flex items-centercursor-pointer gap-x-2 pb-2'><span><IoLogOutOutline size={22} /></span>Logout</li>
+                        <li onClick={handleLogout} className='flex items-center cursor-pointer gap-x-2 pb-2'><span><IoLogOutOutline size={22} /></span>Logout</li>
                     </div>
                 )}
             </ul>
