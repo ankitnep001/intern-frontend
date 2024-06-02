@@ -40,6 +40,10 @@ const AdminSidebar = () => {
                     <span><CiViewTable size={22} /></span>
                     <Link to='/admin/admintable'>Table</Link>
                 </li>
+                <li className='flex items-center cursor-pointer gap-x-2'>
+                    <span><CiViewTable size={22} /></span>
+                    <Link to='/admin/createAdmin'>Create Admin</Link>
+                </li>
 
                 <li onClick={handleToggleDropdown} className=' flex items-center cursor-pointer gap-x-2'>
                     <span className={` transition-transform duration-300 transform ${isRotated ? 'rotate-90' : ''}`}><MdOutlineSettings size={22} /></span>
