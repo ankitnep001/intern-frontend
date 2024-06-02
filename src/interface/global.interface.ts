@@ -10,7 +10,9 @@ export interface ChangePasswordProps {
 }
 
 export interface GetAdminListProps {
-
+    id: string;
+    email: string,
+    role: string,
     username: string,
     details: {
         firstName: {
@@ -27,8 +29,24 @@ export interface GetAdminListProps {
         },
         phoneNumber: null
     }
-    firstName: string,
-    lastName: string,
-    email: string,
-    role: string,
+}
+
+export interface CreateAdminProps {
+    email: string;
+    role: "ADMIN" | "SUPER_ADMIN" | "SUDO_ADMIN";
+    username: string;
+    password: string;
+    allowedFeature: string[];
+    details: {
+        firstName: {
+            en: string;
+            ne?: string;
+        },
+
+        lastName: {
+            en: string;
+            ne?: string;
+        },
+        phoneNumber: number;
+    }
 }
