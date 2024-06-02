@@ -6,13 +6,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
 import * as yup from 'yup';
 
 //validation from yup
 const validationSchema = yup.object({
-    oldPassword: yup.string().required("oldPassword is required"),
-    newPassword: yup.string().required("Password is required")
+    oldPassword: yup.string().required("Old Password is required"),
+    newPassword: yup.string().required("New Password is required")
         .min(8, "Password length should be at least 8 characters")
         .max(16, "Password cannot exceed more than 16 characters")
 })
@@ -27,24 +26,26 @@ const ChangePassword = () => {
     });
 
     const navigate = useNavigate();
-    const onSubmit: SubmitHandler<ChangePasswordProps> = (data) => {
-
-        axiosInstance({
-            method: 'patch',
-            url: '/auth/update-password',
-
-            data: {
-                oldPassword: data.oldPassword,
-                newPassword: data.newPassword
-            }
-        }).then((response) => {
-            // console.log(response);
+    const onSubmit: SubmitHandler<ChangePasswordProps> = async (data) => {
+        try {
+            await axiosInstance({
+                method: 'patch',
+                url: '/auth/update-password',
+                data: {
+                    oldPassword: data.oldPassword,
+                    newPassword: data.newPassword
+                },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessTokenInternProject')}`
+                }
+            });
 
             localStorage.removeItem('accessTokenInternProject');
-            navigate('/login')
-            console.log(response);
-        })
-            .catch(error => console.log(error));
+            navigate('/login');
+            // console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     //show and hide password handler
@@ -55,8 +56,9 @@ const ChangePassword = () => {
         <form onSubmit={handleSubmit(onSubmit)}
             className=" w-full flex justify-center items-center h-screen" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md">
-                <h2 className="text-center text-2xl font-bold mb-4">Change Password</h2>
+                <h2 className="text-center text-2xl font-bold mb-4">Reset Your Password</h2>
 
+                {/* -------------------------email------------------------------------- */}
                 <div className=" relative">
                     <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
                         Old Password:
@@ -68,7 +70,7 @@ const ChangePassword = () => {
                             id="oldpassword"
                             {...register("oldPassword")}
                             autoComplete="off"
-                            placeholder="Your old Password"
+                            placeholder="Enter your old Password"
                             className="w-full  pl-10 pr-3 py-2 border   rounded-md focus:outline-none focus:ring focus:border-blue-500"
                             required
                         />
@@ -82,10 +84,10 @@ const ChangePassword = () => {
                     <span className="text-red-500 text-sm mt-1">{errors.oldPassword?.message}</span>
                 }
 
-
+                {/*----------------- Password------------------- */}
                 <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                        Password:
+                        New Password:
                     </label>
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
@@ -94,7 +96,7 @@ const ChangePassword = () => {
                             id="newpassword"
                             {...register("newPassword")}
                             autoComplete="off"
-                            placeholder="Enter your Password"
+                            placeholder="Enter New Password"
                             className="w-full  pl-10 pr-3 py-2 border   rounded-md focus:outline-none focus:ring focus:border-blue-500"
                             required
                         />
@@ -111,7 +113,7 @@ const ChangePassword = () => {
                     type="submit"
                     className="w-full bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mt-2"
                 >
-                    Change
+                    Reset
                 </button>
             </div>
         </form>
