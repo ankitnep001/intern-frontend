@@ -28,23 +28,18 @@ const LoginForm = () => {
     });
 
     const navigate = useNavigate();
-    const onSubmit: SubmitHandler<LoginFormProps> = (data) => {
-
-        axiosInstance({
-            method: 'post',
-            url: '/auth',
-            data: {
+    const onSubmit: SubmitHandler<LoginFormProps> = async (data) => {
+        try {
+            const response = await axiosInstance.post('/auth', {
                 username: data.email,
-                password: data.password
-            }
-        }).then((response) => {
-            // console.log(response);
+                password: data.password,
+            });
 
             localStorage.setItem('accessTokenInternProject', response.data.data.tokens.accessToken);
-            navigate('/admin')
-            console.log(response);
-        })
-            .catch(error => console.log(error));
+            navigate('/admin');
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     //show and hide password handler
