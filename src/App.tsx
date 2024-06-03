@@ -35,6 +35,7 @@ function App() {
 
   return (
     <>
+      <div id="toast-container-main"></div>
       <RouterProvider router={router} />
     </>
   )

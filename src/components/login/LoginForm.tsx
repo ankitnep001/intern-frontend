@@ -1,3 +1,4 @@
+import { toast } from '@components/toast/ToastManages';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginFormProps } from '@interface/global.interface';
 import { useState } from "react";
@@ -34,11 +35,15 @@ const LoginForm = () => {
                 username: data.email,
                 password: data.password,
             });
-
             localStorage.setItem('accessTokenInternProject', response.data.data.tokens.accessToken);
-            navigate('/admin');
+            toast.show({ title: "Success", content: "Login successfully", duration: 2000, type: 'success' });
+
+            //replace true vayo vane 1 step back auxa 
+            navigate('/admin', { replace: true });
         } catch (error) {
             console.error('Error:', error);
+            toast.show({ title: "Error", content: "Login unsuccessfully", duration: 2000, type: 'error' });
+
         }
     };
 
@@ -61,7 +66,6 @@ const LoginForm = () => {
                         <input
                             type="email"
                             id="email"
-
                             {...register("email")}
                             placeholder="Enter your email"
                             className="w-full  pl-10 pr-3 py-2 border   rounded-md focus:outline-none focus:ring focus:border-blue-500"
