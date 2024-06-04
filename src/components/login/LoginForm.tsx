@@ -1,13 +1,14 @@
 import { toast } from '@components/toast/ToastManages';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginFormProps } from '@interface/global.interface';
+import encryptDecrypt from 'function/encryptDecrypt';
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from 'services/instance';
+import axiosInstance from 'services/instance';
 import * as yup from 'yup';
 
 //validation from yup 
@@ -19,6 +20,7 @@ const validationSchema = yup.object({
 })
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const { encrypt } = encryptDecrypt
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormProps>({
         defaultValues: {
@@ -35,7 +37,8 @@ const LoginForm = () => {
                 username: data.email,
                 password: data.password,
             });
-            localStorage.setItem('accessTokenInternProject', response.data.data.tokens.accessToken);
+            const encrypted = encrypt(response.data.data.tokens.accessToken)
+            localStorage.setItem('accessTokenInternProject', encrypted as string);
             toast.show({ title: "Success", content: "Login successfully", duration: 2000, type: 'success' });
 
             //replace true vayo vane 1 step back auxa 
