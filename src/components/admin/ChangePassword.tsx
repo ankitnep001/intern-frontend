@@ -1,6 +1,7 @@
+import { toast } from "@components/toast/ToastManages";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ChangePasswordProps } from "@interface/global.interface";
-import { axiosInstance } from "@services/instance";
+import axiosInstance from "@services/instance";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
@@ -17,6 +18,7 @@ const validationSchema = yup.object({
 })
 const ChangePassword = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
+
     const { register, handleSubmit, formState: { errors } } = useForm<ChangePasswordProps>({
         defaultValues: {
             oldPassword: "",
@@ -39,12 +41,15 @@ const ChangePassword = () => {
                     Authorization: `Bearer ${localStorage.getItem('accessTokenInternProject')}`
                 }
             });
+            toast.show({ title: "Success", content: "Changed Password successfully", duration: 2000, type: 'success' });
 
             localStorage.removeItem('accessTokenInternProject');
             navigate('/login');
-            // console.log(response);
         } catch (error) {
+            toast.show({ title: "Error", content: "Error Changing Password ", duration: 2000, type: 'error' });
+
             console.error(error);
+
         }
     };
 
@@ -54,11 +59,12 @@ const ChangePassword = () => {
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}
-            className=" w-full flex justify-center items-center h-screen" noValidate>
+            className=" w-full flex justify-center items-center h-screen bg-slate-50" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-center text-2xl font-bold mb-4">Reset Your Password</h2>
 
-                {/* -------------------------email------------------------------------- */}
+                {/* {errorMessage && <div className="text-red-500 text-sm mb-4">{errorMessage}</div>} */}
+                {/* -------------------------OldPassword------------------------------------- */}
                 <div className=" relative">
                     <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
                         Old Password:
@@ -84,7 +90,7 @@ const ChangePassword = () => {
                     <span className="text-red-500 text-sm mt-1">{errors.oldPassword?.message}</span>
                 }
 
-                {/*----------------- Password------------------- */}
+                {/*----------------- NewPassword------------------- */}
                 <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
                         New Password:
