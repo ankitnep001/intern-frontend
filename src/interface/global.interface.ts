@@ -32,11 +32,34 @@ export interface GetAdminListProps {
 }
 
 export interface CreateAdminProps {
+    id?: string
     email: string;
-    role: "ADMIN" | "SUPER_ADMIN" | "SUDO_ADMIN";
+    role: "ADMIN" | "SUPER_ADMIN" | "SUDO_ADMIN" | "USER";
     username: string;
+    firstPassword: string;
     password: string;
-    allowedFeature: string[];
+    allowedFeature: [];
+    details: {
+        firstName: {
+            en: string;
+            ne?: string | undefined;
+        },
+
+        lastName: {
+            en: string;
+            ne?: string | undefined;
+        },
+        phoneNumber: string;
+    }
+}
+
+export interface EditAdminInterface {
+
+    id: string;
+    username?: string;
+    email?: string;
+    role: "ADMIN" | "SUPER_ADMIN" | "SUDO_ADMIN" | "USER";
+    allowedFeature: [];
     details: {
         firstName: {
             en: string;
@@ -47,6 +70,6 @@ export interface CreateAdminProps {
             en: string;
             ne?: string;
         },
-        phoneNumber: number;
+        phoneNumber: string;
     }
 }

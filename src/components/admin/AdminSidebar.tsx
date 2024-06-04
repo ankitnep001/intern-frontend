@@ -28,7 +28,7 @@ const AdminSidebar = () => {
 
     };
     return (
-        <aside className='h-screen w-72 bg-blue-300 px-4 shadow-lg'>
+        <aside className='h-screen fixed w-72 bg-blue-300 px-4 shadow-lg'>
             <Logo />
             <ul className="mt-4 font-medium w-full  space-y-2">
 
@@ -38,12 +38,9 @@ const AdminSidebar = () => {
                 </li>
                 <li className='flex items-center cursor-pointer gap-x-2'>
                     <span><CiViewTable size={22} /></span>
-                    <Link to='/admin/admintable'>Table</Link>
+                    <Link to='/admin/manage_admin'>Manage Admin</Link>
                 </li>
-                <li className='flex items-center cursor-pointer gap-x-2'>
-                    <span><CiViewTable size={22} /></span>
-                    <Link to='/admin/createAdmin'>Create Admin</Link>
-                </li>
+
 
                 <li onClick={handleToggleDropdown} className=' flex items-center cursor-pointer gap-x-2'>
                     <span className={` transition-transform duration-300 transform ${isRotated ? 'rotate-90' : ''}`}><MdOutlineSettings size={22} /></span>
