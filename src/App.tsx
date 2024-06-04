@@ -6,8 +6,8 @@ import ViewDetails from "@components/admin/ViewDetails"
 import About from "@pages/About"
 import Home from "@pages/Home"
 import Login from "@pages/Login"
+import ProtectedRoute from "ProtectedRoute"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import AdminTemplate from "templates/AdminTemplate"
 import Templates from "templates/Templates"
 
 const router = createBrowserRouter([{
@@ -21,7 +21,7 @@ const router = createBrowserRouter([{
 },
 {
   path: '/admin',
-  element: <AdminTemplate />,
+  element: <ProtectedRoute />,
   children: [
     { index: true, element: <AdminDashboard /> },
     { path: 'admintable', element: <AdminTable /> },
