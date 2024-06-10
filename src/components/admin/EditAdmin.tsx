@@ -5,70 +5,89 @@ import Button from "@utils/themes/components/Button";
 import InputField from "@utils/themes/components/InputField";
 import Label from "@utils/themes/components/Label";
 import SelectOption from "@utils/themes/components/SelectOption";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface EditAdminProps {
-    adminId: string | null;
+    admin: any;
     onClose: () => void;
+    onUpdate: (updatedAdmin: any) => void;
 }
 
-const EditAdmin = ({ adminId, onClose }: EditAdminProps) => {
-    const [adminDetail, setAdminDetail] = useState<EditAdminInterface>();
+const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
     const { register, handleSubmit, reset } = useForm<EditAdminInterface>();
 
-    // Fetch admin details when component mounts or adminId changes
     useEffect(() => {
-        const fetchAdminDetails = async () => {
+        const fetchEdit = async () => {
             try {
-                const response = await axiosInstance.get(`/admin/${adminId}`);
-                setAdminDetail(response.data.data);
-                reset(response.data.data);
+                reset({
+                    email: admin.email,
+                    role: admin.role,
+                    allowedFeature: admin.allowedFeature,
+                    details: {
+                        firstName: {
+                            en: admin.details.firstName.en,
+                            ne: admin.details.firstName.ne,
+                        },
+                        lastName: {
+                            en: admin.details.lastName.en,
+                            ne: admin.details.lastName.ne,
+                        },
+                        phoneNumber: admin.details.phoneNumber
+                    }
+                });
             } catch (error) {
-                console.error('Error fetching admin details:', error);
+                console.error(error);
+                toast.show({ title: "error", content: "Edit Unsuccessful", duration: 2000, type: 'error' });
             }
         };
 
-        if (adminId) {
-            fetchAdminDetails();
+        fetchEdit();
+    }, [admin, reset]);
+
+    //for merging the data in table
+    const deepMerge = (target: any, source: any): any => {
+        for (const key in source) {
+            if (source[key] && typeof source[key] === 'object') {
+                if (!target[key]) {
+                    target[key] = {};
+                }
+                deepMerge(target[key], source[key]);
+            } else {
+                target[key] = source[key];
+            }
         }
-    }, [adminId, reset]);
+        return target;
+    };
 
     const onSubmit: SubmitHandler<EditAdminInterface> = async (data) => {
         try {
-            await axiosInstance({
-                method: 'patch',
-                url: '/admin',
-                data: {
-                    id: data.id,
-                    role: data.role,
-                    allowedFeature: data.allowedFeature,
-                    firstName: {
-                        en: data.details.firstName.en,
-
-                    },
-                    lastName: {
-                        en: data.details.lastName.en,
-
-                    },
-                    phoneNumber: data.details.phoneNumber
-                }
-
+            await axiosInstance.patch(`/admin`, {
+                id: admin.id,
+                role: data.role,
+                allowedFeature: data.allowedFeature,
+                firstName: {
+                    en: data.details.firstName.en,
+                    ne: data.details.firstName.ne,
+                },
+                lastName: {
+                    en: data.details.lastName.en,
+                    ne: data.details.lastName.ne,
+                },
+                phoneNumber: data.details.phoneNumber,
             });
             toast.show({ title: "Success", content: "Edited successfully", duration: 2000, type: 'success' });
-            try {
-                onClose();
-
-            } catch (error) {
-                console.log(error)
-            }
+            const UpdatedUserData = deepMerge(admin, data);
+            console.log(data)
+            onUpdate(UpdatedUserData);
+            onClose();
         } catch (error) {
             toast.show({ title: "Error", content: "Edit unsuccessful", duration: 2000, type: 'error' });
             console.error(error);
         }
     };
 
-    if (!adminDetail) {
+    if (!admin) {
         return <div>Loading...</div>;
     }
 
@@ -86,9 +105,9 @@ const EditAdmin = ({ adminId, onClose }: EditAdminProps) => {
                 </div>
             </div>
 
-            <div className="relative mb-2">
+            <div className="relative mb-2 disabled">
                 <Label label="Email:" name="email" />
-                <InputField type="email" name="email" placeholder="Email" register={register} />
+                <InputField type="email" name="email" placeholder="Email" register={register} disabled />
             </div>
 
             <div className="relative mb-2">
