@@ -14,6 +14,7 @@ export interface GetAdminListProps {
     email: string,
     role: string,
     username: string,
+    allowedFeature?: [];
     details: {
         firstName: {
             en: string,
@@ -59,7 +60,7 @@ export interface EditAdminInterface {
     username?: string;
     email?: string;
     role: "ADMIN" | "SUPER_ADMIN" | "SUDO_ADMIN" | "USER";
-    allowedFeature: [];
+    allowedFeature: string[];
     details: {
         firstName: {
             en: string;
@@ -72,4 +73,11 @@ export interface EditAdminInterface {
         },
         phoneNumber: string;
     }
+}
+
+export interface IPagination {
+    total: number,
+    totalPages: number,
+    currentPage: number,
+    perpage: number
 }
