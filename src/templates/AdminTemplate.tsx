@@ -3,14 +3,11 @@ import { Outlet } from "react-router-dom";
 
 const AdminTemplate = () => {
 
-    //for protected route
-
-
     return (
         <>
             {/* <div className=""> */}
             <AdminSidebar />
-            <div className="w-full h-screen pl-72">
+            <div className="w-full h-full pl-44 md:pl-72">
                 <Outlet />
             </div>
             {/* </div> */}

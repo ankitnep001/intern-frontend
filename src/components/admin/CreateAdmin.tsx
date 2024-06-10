@@ -29,7 +29,7 @@ const validationSchema = yup.object().shape({
         .min(8, 'Password must be at least 8 characters')
         .max(16, 'Password cannot exceed 16 characters'),
     password: yup.string().required('Confirm Password is required')
-        .oneOf([yup.ref('firstPassword')], 'Passwords must match')
+        .oneOf([yup.ref('firstPassword')], "Your Password doesn't match")
 });
 
 
@@ -131,7 +131,7 @@ const CreateAdmin = () => {
                     <Label label="Phone Number:" name="details.phoneNumber" />
                     <div className="relative flex items-center">
                         <MdOutlineLocalPhone className="absolute left-3 text-gray-500" />
-                        <InputField type="number" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
+                        <InputField type="tel" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
                     </div>
                     {errors.details?.phoneNumber &&
                         <span className="text-red-500 text-sm mt-1">{errors.details?.phoneNumber?.message}</span>

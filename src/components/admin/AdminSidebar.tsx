@@ -24,11 +24,11 @@ const AdminSidebar = () => {
 
         localStorage.removeItem('accessTokenInternProject');
         navigate('/');
-        window.location.reload();
+        // window.location.reload();
 
     };
     return (
-        <aside className='h-screen fixed w-72 bg-blue-300 px-4 shadow-lg'>
+        <aside className='h-screen fixed w-40 md:w-72 bg-blue-300 px-4 shadow-lg'>
             <Logo />
             <ul className="mt-4 font-medium w-full  space-y-2">
 
