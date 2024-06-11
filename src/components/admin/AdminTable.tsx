@@ -1,6 +1,7 @@
 import { toast } from "@components/toast/ToastManages";
 import { GetAdminListProps, IPagination } from "@interface/global.interface";
 import axiosInstance from "@services/instance";
+import ConfirmationBox from "@utils/themes/components/ConfirmationBox";
 import { useDebounce } from "Debounce";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
@@ -14,7 +15,7 @@ import ViewDetails from "./ViewDetails";
 const AdminTable = () => {
     const [adminList, setAdminList] = useState<GetAdminListProps[]>([]);
     const [modal, setModal] = useState<boolean>(false);
-    const [modalContent, setModalContent] = useState<'view' | 'edit'>('view');
+    const [modalContent, setModalContent] = useState<'view' | 'edit' | 'delete'>('view');
     const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
     const [originalSort, setOriginalSort] = useState<GetAdminListProps[]>([]);
     const [sortStatus, setSortStatus] = useState<0 | 1 | 2>(0); // 0: both, 1: down, 2: up
@@ -47,6 +48,11 @@ const AdminTable = () => {
         fetchUsers();
     }, [refresh, rowsPerPage, totalPages.currentPage, debouncedSearch]);
 
+    const handleDeleteConfirm = () => {
+        closeModal();
+        handleDelete(selectedAdminId)
+    }
+
     const handleDelete = async (id: string) => {
         try {
             await axiosInstance.delete(`/admin/${id}`);
@@ -58,7 +64,8 @@ const AdminTable = () => {
         }
     };
 
-    const openModal = (type: 'view' | 'edit', admin: GetAdminListProps) => {
+
+    const openModal = (type: 'view' | 'edit' | 'delete', admin: GetAdminListProps) => {
         setModalContent(type);
         setSpecificAdmin(admin);
         setModal(true);
@@ -107,7 +114,7 @@ const AdminTable = () => {
             <div className="flex justify-end items-center mb-2">
                 <div>
                     <input
-                        className="p-1 focus:outline-none"
+                        className="p-1 rounded-xl focus:outline-none"
                         type="text"
                         placeholder="Search User"
                         value={search}
@@ -124,14 +131,14 @@ const AdminTable = () => {
                         <tr>
                             <th className="px-6 py-3">S.N</th>
                             {/* sort firstName */}
-                            <th className="px-6 py-3 flex justify-center items-center">FirstName
+                            <th className="px-6 py-3 flex justify-center items-center">First Name
                                 <div className="p-2 cursor-pointer" onClick={handleSortClick}>
                                     {sortStatus === 0 && <RiExpandUpDownFill size={22} />}
                                     {sortStatus === 1 && <MdArrowDropDown size={24} />}
                                     {sortStatus === 2 && <MdArrowDropUp size={24} />}
                                 </div>
                             </th>
-                            <th className="px-6 py-3">LastName</th>
+                            <th className="px-6 py-3">Last Name</th>
                             <th className="px-6 py-3">Username</th>
                             <th className="px-6 py-3">Email</th>
                             <th className="px-6 py-3">Role</th>
@@ -144,7 +151,7 @@ const AdminTable = () => {
                         {adminList?.length > 0 && adminList.map((item, index) => (
                             item && (
                                 <tr key={item.id} className="odd:bg-white even:bg-blue-300">
-                                    <td className="px-6 py-3">{(totalPages.currentPage - 1) * totalPages.perpage + index + 1}</td>
+                                    <td className="px-6 py-3">{(totalPages?.currentPage - 1) * totalPages?.perpage + index + 1}</td>
                                     <td className="px-6 py-3">{item.details.firstName.en}</td>
                                     <td className="px-6 py-3">{item.details.lastName.en}</td>
                                     <td className="px-6 py-3">{item.username.toLowerCase()}</td>
@@ -157,35 +164,41 @@ const AdminTable = () => {
                                         Edit
                                     </td>
                                     <td className="px-6 py-3 text-red-600 inline-block cursor-pointer">
-                                        <MdDeleteOutline size={24} onClick={() => handleDelete(item.id)} />
+                                        <MdDeleteOutline size={24} onClick={() => { setSelectedAdminId(item?.id); openModal('delete', item) }} />
                                     </td>
+                                    {/* handleDelete(item.id) */}
                                 </tr>
                             )
                         ))}
                     </tbody>
                 </table>
-                <Pagination
-                    totalPages={totalPages}
-                    setTotalPages={setTotalPages}
-                    rowsPerPage={rowsPerPage}
-                    setRowsPerPage={setRowsPerPage}
-                    setRefresh={setRefresh}
-                />
+
                 {modal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                            <div className="flex justify-end">
-                                <button onClick={closeModal} className="text-red-500 hover:bg-red-600 hover:text-white p-2 rounded-lg">Close</button>
-                            </div>
+                            {modalContent !== 'delete' && (
+                                <div className="flex justify-end">
+                                    <button onClick={closeModal} className="text-red-500 hover:bg-red-600 hover:text-white p-2 rounded-lg">Close</button>
+                                </div>
+                            )}
                             {modalContent === 'view' ? (
                                 <ViewDetails adminId={selectedAdminId} />
-                            ) : (
+                            ) : modalContent === 'edit' ? (
                                 <EditAdmin admin={specificAdmin} onClose={closeModal} onUpdate={updateAdminList} />
-                            )}
+                            ) : modalContent === 'delete' ? (
+                                <ConfirmationBox onClose={closeModal} message="delete" onConfirm={handleDeleteConfirm} selectedAdminId={selectedAdminId} />
+                            ) : null}
                         </div>
                     </div>
                 )}
             </div>
+            <Pagination
+                totalPages={totalPages ?? defaultPagination}
+                setTotalPages={setTotalPages}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                setRefresh={setRefresh}
+            />
         </div>
     );
 };
