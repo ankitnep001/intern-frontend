@@ -1,5 +1,6 @@
 import { IPagination } from "@interface/global.interface";
 import { useState } from "react";
+import { MdOutlineFirstPage, MdOutlineLastPage } from "react-icons/md";
 
 interface PaginationProps {
     totalPages: IPagination,
@@ -7,7 +8,6 @@ interface PaginationProps {
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
     rowsPerPage: number;
     setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
-
 }
 
 const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setRefresh, rowsPerPage, setRowsPerPage }) => {
@@ -33,10 +33,23 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setR
         }
     };
 
+    const handleFirst = () => {
+        setTotalPages(prev => ({
+            ...prev,
+            currentPage: 1,
+        }));
+        setRefresh(prev => !prev);
+    };
 
+    const handleLast = () => {
+        setTotalPages(prev => ({
+            ...prev,
+            currentPage: totalPages.totalPages,
+        }));
+        setRefresh(prev => !prev);
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // const value = parseInt(e.target.value); 
         setInputRowPerPage(parseInt(e.target.value));
     };
 
@@ -45,46 +58,96 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setR
         setRefresh(prevRefresh => !prevRefresh);
     };
 
-    const pageNumbers = Array.from({ length: totalPages.totalPages }, (_, index) => index + 1);
-
-    const handlePages = (pageNumbers: number) => {
-        setTotalPages({ ...totalPages, currentPage: pageNumbers })
+    const handlePages = (pageNumber: number) => {
+        setTotalPages({ ...totalPages, currentPage: pageNumber });
         setRefresh(prevRefresh => !prevRefresh);
+    };
 
-    }
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+        const siblingCount = 1;
+        const totalPageCount = totalPages.totalPages;
+        const currentPage = totalPages.currentPage;
+
+        const startPage = Math.max(1, currentPage - siblingCount);
+        const endPage = Math.min(totalPageCount, currentPage + siblingCount);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(
+                <button
+                    key={i}
+                    className={`px-1 ${i === currentPage ? 'font-bold' : ''}`}
+                    onClick={() => handlePages(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        if (startPage > 1) {
+            pageNumbers.unshift(
+                <span key="start" className="px-1">...</span>
+            );
+            pageNumbers.unshift(
+                <button
+                    key={1}
+                    className={`px-1 ${1 === currentPage ? 'font-bold' : ''}`}
+                    onClick={() => handlePages(1)}
+                >
+                    1
+                </button>
+            );
+        }
+
+        if (endPage < totalPageCount) {
+            pageNumbers.push(<span key="end" className="px-1">...</span>);
+
+            pageNumbers.push(
+                <button
+                    key={totalPageCount}
+                    className={`px-1 ${totalPageCount === currentPage ? 'font-bold' : ''}`}
+                    onClick={() => handlePages(totalPageCount)}
+                >
+                    {totalPageCount}
+                </button>
+            );
+        }
+        return pageNumbers;
+    };
 
     return (
         <div className="flex justify-between items-center px-2 py-2">
-            {/* perpage */}
+            {/* Rows per page input */}
             <div className="space-x-2">
                 <input
                     type="number"
                     value={inputRowPerPage}
                     className="border rounded-lg p-1 w-10 text-center"
-                    onChange={handleInputChange} />
+                    onChange={handleInputChange}
+                />
                 <button
                     onClick={handleRowsPerPageChange}
-                    className="bg-blue-500 text-white px-2 py-1 rounded-lg">RowsPerPage</button>
+                    className="bg-blue-500 text-white px-2 py-1 rounded-lg"
+                >
+                    RowsPerPage
+                </button>
             </div>
 
-            {/* next and previous */}
+            {/* Pagination controls */}
             <div className="flex flex-col justify-center items-center">
-
-                <div className="space-x-4">
-                    <button onClick={handlePrevious} className="border-2 border-black px-2">-</button>
-                    {pageNumbers.map(page => (
-                        <button
-                            className={`px-1 ${page === totalPages.currentPage ? 'font-bold' : ''}`}
-                            onClick={() => handlePages(page)} key={page}>{page}</button>
-                    ))}
-                    <button onClick={handleNext} className="border-2 border-black px-2">+</button>
+                <div className="space-x-2 flex">
+                    <button onClick={handleFirst} className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''} `}><MdOutlineFirstPage /></button>
+                    <button onClick={handlePrevious} className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''} `}>-</button>
+                    {renderPageNumbers()}
+                    <button onClick={handleNext} className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''} `}>+</button>
+                    <button onClick={handleLast} className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''} `}><MdOutlineLastPage /></button>
                 </div>
                 <div>
                     <span>{`Page ${totalPages.currentPage} of ${totalPages.totalPages}`}</span>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Pagination
+export default Pagination;
