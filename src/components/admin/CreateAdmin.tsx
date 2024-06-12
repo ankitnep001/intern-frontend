@@ -7,8 +7,10 @@ import InputField from "@utils/themes/components/InputField";
 import Label from "@utils/themes/components/Label";
 import SelectOption from "@utils/themes/components/SelectOption";
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FaRegUser } from "react-icons/fa";
 import { MdOutlineEmail, MdOutlineLocalPhone } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+
 import * as yup from 'yup';
 
 // validation from yup
@@ -75,7 +77,7 @@ const CreateAdmin = () => {
             });
             reset();
             toast.show({ title: "Success", content: "Created successfully", duration: 2000, type: 'success' });
-
+            console.log("data", data)
 
         } catch (error) {
             console.error('Error:', error);
@@ -85,16 +87,16 @@ const CreateAdmin = () => {
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}
-            className=" flex justify-center items-center h-screen w-full bg-slate-50" noValidate>
+            className=" flex justify-center items-center h-screen w-full bg-slate-100" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md ">
                 <h1 className="text-center text-2xl font-bold mb-4">Create Account</h1>
 
                 {/* First and Last Name */}
-                <div className="relative flex space-x-5 mb-2">
+                <div className="flex  gap-x-3">
                     <div>
-                        <Label label="First Name:" name="details.firstName.en" />
-                        <div className="relative flex items-center">
-                            {/* <CgProfile className=" absolute left-3 text-gray-500 " /> */}
+                        <Label label="First Name (EN)" name="details.firstName.en" />
+                        <div className="relative flex items-center ">
+                            <FaRegUser className=" absolute left-3  text-gray-500 " />
                             <InputField type="text" name="details.firstName.en" placeholder='First Name' register={register} />
                         </div>
                         {errors.details?.firstName?.en &&
@@ -103,20 +105,48 @@ const CreateAdmin = () => {
                     </div>
 
                     <div>
-                        <Label label="Last Name:" name="details.lastName.en" />
+                        <Label label="First Name (NE)" name="details.firstName.ne" />
+                        <div className="relative flex items-center ">
+                            <FaRegUser className=" absolute left-3 text-gray-500 " />
+                            <InputField type="text" name="details.firstName.ne" placeholder='पहिलो नाम' register={register} />
+                        </div>
+                        {errors.details?.firstName?.ne &&
+                            <span className="text-red-500 text-sm mt-1">{errors.details?.firstName?.ne.message}</span>
+                        }
+                    </div>
+
+                </div>
+
+
+                {/* </div> */}
+                <div className="flex gap-x-3">
+                    <div>
+                        <Label label="Last Name (EN)" name="details.lastName.en" />
                         <div className="relative flex items-center">
-                            {/* <CgProfile className=" absolute left-3 text-gray-500 " /> */}
+                            <FaRegUser className=" absolute left-3 text-gray-500 " />
                             <InputField type="text" name="details.lastName.en" placeholder='Last Name' register={register} />
                         </div>
                         {errors.details?.lastName?.en &&
                             <span className="text-red-500 text-sm mt-1">{errors.details?.lastName?.en.message}</span>
                         }
                     </div>
+
+                    <div>
+                        <Label label="Last Name (NE)" name="details.lastName.ne" />
+                        <div className="relative flex items-center">
+                            <FaRegUser className=" absolute left-3 text-gray-500 " />
+                            <InputField type="text" name="details.lastName.ne" placeholder='थर' register={register} />
+                        </div>
+                        {errors.details?.lastName?.ne &&
+                            <span className="text-red-500 text-sm mt-1">{errors.details?.lastName?.ne.message}</span>
+                        }
+                    </div>
+
                 </div>
 
                 {/* Email */}
                 <div className="relative mb-2">
-                    <Label label="Email:" name="email" />
+                    <Label label="Email" name="email" />
                     <div className="relative flex items-center">
                         <MdOutlineEmail className=" absolute left-3 text-gray-500 " />
                         <InputField type="email" name='email' placeholder='Enter your Email' register={register} />
@@ -128,7 +158,7 @@ const CreateAdmin = () => {
 
                 {/* Phone Number */}
                 <div className="relative mb-2">
-                    <Label label="Phone Number:" name="details.phoneNumber" />
+                    <Label label="Phone Number" name="details.phoneNumber" />
                     <div className="relative flex items-center">
                         <MdOutlineLocalPhone className="absolute left-3 text-gray-500" />
                         <InputField type="tel" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
@@ -141,19 +171,10 @@ const CreateAdmin = () => {
                 {/* Role and allowedFeature */}
 
                 {/* allowed Features */}
-                <div className="relative mb-2 flex gap-3">
-                    <div className="">
-                        <Label label="Feature" name="allowedFeature" />
-                        <div>
-                            <SelectOption name="allowedFeature" options={[
-                                { value: 'MANAGE_ADMIN', label: 'MANAGE_ADMIN' },
-                                { value: 'SETUP', label: 'SETUP' }
-                            ]}
-                                placeholder="Select Feature" register={register} />
-                        </div>
-                    </div>
+                <div className="relative mb-2 flex  gap-3">
+
                     <div>
-                        <Label label="Select Role:" name="role" />
+                        <Label label="Select Role" name="role" />
                         <div>
                             <SelectOption name="role" options={[
                                 { value: 'SUDO_ADMIN', label: 'Sudo Admin' },
@@ -164,16 +185,21 @@ const CreateAdmin = () => {
                                 placeholder="Select a role" register={register} />
                         </div>
                     </div>
+                    <div className="">
+                        <Label label="Features" name="allowedFeature" />
+                        <div>
+                            <SelectOption name="allowedFeature" options={[
+                                { value: 'MANAGE_ADMIN', label: 'MANAGE_ADMIN' },
+                                { value: 'SETUP', label: 'SETUP' }
+                            ]}
+                                placeholder="Select Feature" register={register} />
+                            {/* <InputField type="checkbox" name="allowedFeature" register={register} placeholder={"Select Features"} /> */}
+                        </div>
+                    </div>
                 </div>
-                {/* Role */}
-                {/* <div className="relative mb-2">
-                        
-                    </div> */}
 
-
-                {/* Password */}
                 <div className="relative mb-2">
-                    <Label label="Password:" name="firstPassword" />
+                    <Label label="Password" name="firstPassword" />
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
                         <InputField type="password" name='firstPassword' placeholder='Password' autocomplete="off" register={register} />
@@ -185,7 +211,7 @@ const CreateAdmin = () => {
 
                 {/* Confirm Password */}
                 <div className="relative mb-2">
-                    <Label label="Confirm Password:" name="password" />
+                    <Label label="Confirm Password" name="password" />
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
                         <InputField type="password" name='password' placeholder='Confirm Password' autocomplete="off" register={register} />
