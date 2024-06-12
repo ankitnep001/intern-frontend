@@ -39,10 +39,12 @@ const LoginForm = () => {
             });
             const encrypted = encrypt(response.data.data.tokens.accessToken)
             localStorage.setItem('accessTokenInternProject', encrypted as string);
+            localStorage.setItem('FirstName', response.data.data.admin.details.firstName.en);
             toast.show({ title: "Success", content: "Login successfully", duration: 2000, type: 'success' });
 
             //replace true vayo vane 1 step back auxa 
             navigate('/admin', { replace: true });
+            console.log("data", response.data.data)
         } catch (error) {
             console.error('Error:', error);
             toast.show({ title: "Error", content: "Login unsuccessfully", duration: 2000, type: 'error' });
@@ -62,7 +64,7 @@ const LoginForm = () => {
 
                 <div className=" relative ">
                     <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-                        Email:
+                        Email
                     </label>
                     <div className="relative flex items-center">
                         <MdOutlineEmail className=" absolute left-3 text-gray-500 " />
@@ -83,7 +85,7 @@ const LoginForm = () => {
 
                 <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                        Password:
+                        Password
                     </label>
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
@@ -106,6 +108,10 @@ const LoginForm = () => {
                 {errors.password &&
                     <span className="text-red-500 text-sm mt-1">{errors.password?.message}</span>
                 }
+                {/* <div className='flex gap-x-2'>
+                    <p>Remember Me:</p>
+                    <input type="checkbox" className='items-center' />
+                </div> */}
                 <button
                     type="submit"
                     className="w-full bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mt-2"

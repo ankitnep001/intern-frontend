@@ -1,4 +1,3 @@
-import Logo from '@components/header/Logo';
 import ConfirmationBox from '@utils/themes/components/ConfirmationBox';
 import { useState } from 'react';
 import { CiViewTable } from "react-icons/ci";
@@ -15,26 +14,26 @@ const AdminSidebar = () => {
     const [modal, setModal] = useState<boolean>(false);
 
     const handleToggleDropdown = () => {
-        // setShowDropdown(!showDropdown);
         setIsRotated(!isRotated)
     }
     const openModal = () => {
         setModal(true);
     }
-
     const closeModal = () => {
         setModal(false);
     }
 
     const handleLogout = () => {
         localStorage.removeItem('accessTokenInternProject');
+        localStorage.removeItem('FirstName');
         navigate('/');
-        // window.location.reload();
     };
+
+    const firstName = localStorage.getItem('FirstName');
     return (
-        <aside className='h-screen fixed w-40 md:w-72 bg-blue-300 px-4 shadow-lg'>
-            <Logo />
-            <ul className="mt-4 font-medium w-full  space-y-2">
+        <aside className='h-screen fixed w-40 md:w-64 bg-blue-400 px-4 py-4 shadow-lg'>
+            <p className='text-xl'>Welcome, <span className='font-bold'>{firstName}</span></p>
+            <ul className="mt-4 font-medium w-full  space-y-2 ">
 
                 <li className='flex items-center cursor-pointer gap-x-2'>
                     <span><IoHomeOutline size={22} /></span>
@@ -44,7 +43,6 @@ const AdminSidebar = () => {
                     <span><CiViewTable size={22} /></span>
                     <Link to='/admin/manage-admin'>Manage Admin</Link>
                 </li>
-
 
                 <li onClick={handleToggleDropdown} className=' flex items-center cursor-pointer gap-x-2'>
                     <span className={` transition-transform duration-300 transform ${isRotated ? 'rotate-90' : ''}`}><MdOutlineSettings size={22} /></span>
