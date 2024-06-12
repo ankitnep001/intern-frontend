@@ -9,8 +9,11 @@ import Label from "@utils/themes/components/Label";
 import SelectOption from "@utils/themes/components/SelectOption";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaRegUser } from "react-icons/fa";
+import { GrPowerReset } from "react-icons/gr";
 import { MdOutlineEmail, MdOutlineLocalPhone } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+
+
 
 import * as yup from 'yup';
 
@@ -89,8 +92,11 @@ const CreateAdmin = () => {
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}
-            className=" flex justify-center items-center h-screen w-full bg-slate-100" noValidate>
+            className=" flex justify-center items-center  w-full md:mt-3 bg-slate-100" noValidate>
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md ">
+                <div className="text-end" onClick={() => reset()}>
+                    <button><GrPowerReset /></button>
+                </div>
                 <h1 className="text-center text-2xl font-bold mb-4">Create Account</h1>
 
                 {/* First Name*/}
@@ -244,7 +250,9 @@ const CreateAdmin = () => {
                 </div>
 
                 {/* Create Button */}
-                <Button type="submit">Create</Button>
+
+                <Button type="submit" children='Create' />
+
             </div>
         </form>
     )
