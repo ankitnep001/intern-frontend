@@ -43,12 +43,16 @@ export interface CreateAdminProps {
     details: {
         firstName: {
             en: string;
-            ne?: string | undefined;
+            ne?: string;
+        },
+        middleName: {
+            en: string;
+            ne?: string;
         },
 
         lastName: {
             en: string;
-            ne?: string | undefined;
+            ne?: string;
         },
         phoneNumber: string;
     }

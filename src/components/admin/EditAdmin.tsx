@@ -2,11 +2,14 @@ import { toast } from "@components/toast/ToastManages";
 import { EditAdminInterface } from "@interface/global.interface";
 import axiosInstance from "@services/instance";
 import Button from "@utils/themes/components/Button";
+import Checkbox from "@utils/themes/components/Checkbox";
 import InputField from "@utils/themes/components/InputField";
 import Label from "@utils/themes/components/Label";
 import SelectOption from "@utils/themes/components/SelectOption";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { FaRegUser } from "react-icons/fa";
+import { MdOutlineEmail, MdOutlineLocalPhone } from "react-icons/md";
 
 interface EditAdminProps {
     admin: any;
@@ -15,7 +18,7 @@ interface EditAdminProps {
 }
 
 const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
-    const { register, handleSubmit, reset } = useForm<EditAdminInterface>();
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<EditAdminInterface>();
 
     useEffect(() => {
         const fetchEdit = async () => {
@@ -94,46 +97,119 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <h1 className="font-bold mb-2 text-2xl underline">Edit Admin</h1>
-            <div className="relative flex space-x-5 mb-2">
+            {/* <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md "> */}
+
+            {/* First and Last Name */}
+            <div className="flex  gap-x-3">
                 <div>
-                    <Label label="First Name (EN):" name="details.firstName.en" />
-                    <InputField type="text" name="details.firstName.en" placeholder="First Name" register={register} />
+                    <Label label="First Name (EN)" name="details.firstName.en" />
+                    <div className="relative flex items-center ">
+                        <FaRegUser className=" absolute left-3  text-gray-500 " />
+                        <InputField type="text" name="details.firstName.en" placeholder='First Name' register={register} />
+                    </div>
+                    {errors.details?.firstName?.en &&
+                        <span className="text-red-500 text-sm mt-1">{errors.details?.firstName?.en.message}</span>
+                    }
                 </div>
+
                 <div>
-                    <Label label="Last Name (EN):" name="details.lastName.en" />
-                    <InputField type="text" name="details.lastName.en" placeholder="Last Name" register={register} />
+                    <Label label="First Name (NE)" name="details.firstName.ne" />
+                    <div className="relative flex items-center ">
+                        <FaRegUser className=" absolute left-3 text-gray-500 " />
+                        <InputField type="text" name="details.firstName.ne" placeholder='पहिलो नाम' register={register} />
+                    </div>
+                    {errors.details?.firstName?.ne &&
+                        <span className="text-red-500 text-sm mt-1">{errors.details?.firstName?.ne.message}</span>
+                    }
+                </div>
+
+            </div>
+
+
+            {/* </div> */}
+            <div className="flex gap-x-3">
+                <div>
+                    <Label label="Last Name (EN)" name="details.lastName.en" />
+                    <div className="relative flex items-center">
+                        <FaRegUser className=" absolute left-3 text-gray-500 " />
+                        <InputField type="text" name="details.lastName.en" placeholder='Last Name' register={register} />
+                    </div>
+                    {errors.details?.lastName?.en &&
+                        <span className="text-red-500 text-sm mt-1">{errors.details?.lastName?.en.message}</span>
+                    }
+                </div>
+
+                <div>
+                    <Label label="Last Name (NE)" name="details.lastName.ne" />
+                    <div className="relative flex items-center">
+                        <FaRegUser className=" absolute left-3 text-gray-500 " />
+                        <InputField type="text" name="details.lastName.ne" placeholder='थर' register={register} />
+                    </div>
+                    {errors.details?.lastName?.ne &&
+                        <span className="text-red-500 text-sm mt-1">{errors.details?.lastName?.ne.message}</span>
+                    }
+                </div>
+
+            </div>
+
+            {/* Email */}
+            <div className="relative mb-2">
+                <Label label="Email" name="email" />
+                <div className="relative flex items-center">
+                    <MdOutlineEmail className=" absolute left-3 text-gray-500 " />
+                    <InputField type="email" name='email' placeholder='Enter your Email' register={register} disabled />
+                </div>
+                {errors.email &&
+                    <span className="text-red-500 text-sm mt-1">{errors.email?.message}</span>
+                }
+            </div>
+
+            {/* Phone Number */}
+            <div className="relative mb-2">
+                <Label label="Phone Number" name="details.phoneNumber" />
+                <div className="relative flex items-center">
+                    <MdOutlineLocalPhone className="absolute left-3 text-gray-500" />
+                    <InputField type="tel" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
+                </div>
+                {errors.details?.phoneNumber &&
+                    <span className="text-red-500 text-sm mt-1">{errors.details?.phoneNumber?.message}</span>
+                }
+            </div>
+
+            {/* Role and allowedFeature */}
+
+            {/* allowed Features */}
+            <div className="relative mb-2 flex  gap-3">
+
+                <div>
+                    <Label label="Select Role" name="role" />
+                    <div>
+                        <SelectOption name="role" options={[
+                            { value: 'SUDO_ADMIN', label: 'Sudo Admin' },
+                            { value: 'SUPER_ADMIN', label: 'Super Admin' },
+                            { value: 'ADMIN', label: 'Admin' },
+                            { value: 'USER', label: 'User' }
+                        ]}
+                            placeholder="Select a role" register={register} />
+                    </div>
+                </div>
+                <div className="">
+                    <Label label="Features" name="allowedFeature" />
+                    <Checkbox name='allowedFeature' options={[
+                        { label: 'Setup', value: 'SETUP' },
+                        { label: 'Manage Admin', value: 'MANAGE_ADMIN' }
+                    ]}
+                        register={register} />
                 </div>
             </div>
 
-            <div className="relative mb-2 disabled">
-                <Label label="Email:" name="email" />
-                <InputField type="email" name="email" placeholder="Email" register={register} disabled />
-            </div>
 
-            <div className="relative mb-2">
-                <Label label="Feature" name="allowedFeature" />
-                <SelectOption name="allowedFeature" options={[
-                    { value: 'MANAGE_ADMIN', label: 'MANAGE_ADMIN' },
-                    { value: 'SETUP', label: 'SETUP' }
-                ]} placeholder="Select Feature" register={register} />
-            </div>
 
-            <div className="relative mb-2">
-                <Label label="Roles" name="role" />
-                <SelectOption name="role" options={[
-                    { value: 'SUDO_ADMIN', label: 'SUDO_ADMIN' },
-                    { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' },
-                    { value: 'ADMIN', label: 'ADMIN' },
-                    { value: 'USER', label: 'USER' }
-                ]} placeholder="Select Role" register={register} />
-            </div>
 
-            <div className="relative mb-2">
-                <Label label="Phone Number:" name="details.phoneNumber" />
-                <InputField type="number" name="details.phoneNumber" placeholder="Phone Number" register={register} />
-            </div>
 
-            <Button type="submit">Update</Button>
+            {/* Create Button */}
+            <Button type="submit" submitting={isSubmitting}>Update</Button>
+            {/* </div> */}
         </form>
     );
 };

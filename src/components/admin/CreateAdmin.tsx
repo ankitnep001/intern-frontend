@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateAdminProps } from "@interface/global.interface";
 import axiosInstance from "@services/instance";
 import Button from "@utils/themes/components/Button";
+import Checkbox from "@utils/themes/components/Checkbox";
 import InputField from "@utils/themes/components/InputField";
 import Label from "@utils/themes/components/Label";
 import SelectOption from "@utils/themes/components/SelectOption";
@@ -46,6 +47,7 @@ const CreateAdmin = () => {
             allowedFeature: [],
             details: {
                 firstName: { en: '', ne: '' },
+                middleName: { en: '', ne: '' },
                 lastName: { en: '', ne: '' },
                 phoneNumber: '',
             }
@@ -72,7 +74,7 @@ const CreateAdmin = () => {
 
                     phoneNumber: data.details.phoneNumber,
                 },
-                allowedFeature: [data.allowedFeature],
+                allowedFeature: data.allowedFeature,
 
             });
             reset();
@@ -91,7 +93,7 @@ const CreateAdmin = () => {
             <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md ">
                 <h1 className="text-center text-2xl font-bold mb-4">Create Account</h1>
 
-                {/* First and Last Name */}
+                {/* First Name*/}
                 <div className="flex  gap-x-3">
                     <div>
                         <Label label="First Name (EN)" name="details.firstName.en" />
@@ -114,11 +116,33 @@ const CreateAdmin = () => {
                             <span className="text-red-500 text-sm mt-1">{errors.details?.firstName?.ne.message}</span>
                         }
                     </div>
+                </div>
+
+                <div className="flex gap-x-3">
+                    <div>
+                        <Label label="Middle Name (EN)" name="details.middleName.en" />
+                        <div className="relative flex items-center">
+                            <FaRegUser className=" absolute left-3 text-gray-500 " />
+                            <InputField type="text" name="details.middleName.en" placeholder='Last Name' register={register} />
+                        </div>
+                        {errors.details?.middleName?.en &&
+                            <span className="text-red-500 text-sm mt-1">{errors.details?.middleName?.en.message}</span>
+                        }
+                    </div>
+
+                    <div>
+                        <Label label="Middle Name (NE)" name="details.middleName.ne" />
+                        <div className="relative flex items-center">
+                            <FaRegUser className=" absolute left-3 text-gray-500 " />
+                            <InputField type="text" name="details.middleName.ne" placeholder='थर' register={register} />
+                        </div>
+                        {errors.details?.middleName?.ne &&
+                            <span className="text-red-500 text-sm mt-1">{errors.details?.middleName?.ne.message}</span>
+                        }
+                    </div>
 
                 </div>
 
-
-                {/* </div> */}
                 <div className="flex gap-x-3">
                     <div>
                         <Label label="Last Name (EN)" name="details.lastName.en" />
@@ -185,16 +209,14 @@ const CreateAdmin = () => {
                                 placeholder="Select a role" register={register} />
                         </div>
                     </div>
+
                     <div className="">
                         <Label label="Features" name="allowedFeature" />
-                        <div>
-                            <SelectOption name="allowedFeature" options={[
-                                { value: 'MANAGE_ADMIN', label: 'MANAGE_ADMIN' },
-                                { value: 'SETUP', label: 'SETUP' }
-                            ]}
-                                placeholder="Select Feature" register={register} />
-                            {/* <InputField type="checkbox" name="allowedFeature" register={register} placeholder={"Select Features"} /> */}
-                        </div>
+                        <Checkbox name='allowedFeature' options={[
+                            { label: 'Setup', value: 'SETUP' },
+                            { label: 'Manage Admin', value: 'MANAGE_ADMIN' }
+                        ]}
+                            register={register} />
                     </div>
                 </div>
 
@@ -224,7 +246,8 @@ const CreateAdmin = () => {
                 {/* Create Button */}
                 <Button type="submit">Create</Button>
             </div>
-        </form>)
+        </form>
+    )
 }
 
 export default CreateAdmin
