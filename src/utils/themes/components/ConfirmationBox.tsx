@@ -10,7 +10,7 @@ interface IConfirm {
 const ConfirmationBox: React.FC<IConfirm> = ({ message, onClose, onConfirm }) => {
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col z-[100]">
             {/* Confirmation box content */}
             <p className="text-lg">Are you sure you want to {message}?</p>
             <div className="flex justify-end gap-x-4">
