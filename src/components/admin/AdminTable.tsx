@@ -4,13 +4,13 @@ import axiosInstance from "@services/instance";
 import ConfirmationBox from "@utils/themes/components/ConfirmationBox";
 import { useDebounce } from "Debounce";
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaWindowClose } from "react-icons/fa";
 import { MdArrowDropDown, MdArrowDropUp, MdDeleteOutline } from "react-icons/md";
 import { RiExpandUpDownFill } from "react-icons/ri";
+
 import EditAdmin from "./EditAdmin";
 import Pagination from "./Pagination";
 import ViewDetails from "./ViewDetails";
-
 
 const AdminTable = () => {
     const [adminList, setAdminList] = useState<GetAdminListProps[]>([]);
@@ -110,7 +110,7 @@ const AdminTable = () => {
     };
 
     return (
-        <div className="relative w-full mt-10 px-5">
+        <div className="relative w-full mt-10 px-5 z-0">
             <div className="flex justify-end items-center mb-2">
                 <div>
                     <input
@@ -150,7 +150,7 @@ const AdminTable = () => {
                     <tbody className="w-full">
                         {adminList?.length > 0 && adminList.map((item, index) => (
                             item && (
-                                <tr key={item.id} className="odd:bg-white even:bg-blue-300">
+                                <tr key={item.id} className="border-b-2 ">
                                     <td className="px-6 py-3">{(totalPages?.currentPage - 1) * totalPages?.perpage + index + 1}</td>
                                     <td className="px-6 py-3">{item.details.firstName.en}</td>
                                     <td className="px-6 py-3">{item.details.lastName.en}</td>
@@ -175,10 +175,10 @@ const AdminTable = () => {
 
                 {modal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        <div className="bg-white px-4 py-1 rounded-lg shadow-lg w-full max-w-md">
                             {modalContent !== 'delete' && (
                                 <div className="flex justify-end">
-                                    <button onClick={closeModal} className="text-red-500 hover:bg-red-600 hover:text-white p-2 rounded-lg">Close</button>
+                                    <button onClick={closeModal} className="text-red-500  p-2 rounded-lg"><FaWindowClose size={24} /></button>
                                 </div>
                             )}
                             {modalContent === 'view' ? (

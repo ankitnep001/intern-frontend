@@ -4,7 +4,7 @@ import CreateAdmin from "./CreateAdmin";
 const ManageAdmin = () => {
     const [showAdmin, setShowAdmin] = useState<boolean>(true);
     return (
-        <div className=" w-full h-full p-4 bg-slate-100 ">
+        <div className=" w-full  h-full rounded-md p-4 bg-slate-100 ">
             <div className="flex justify-between ">
                 <h1 className="text-3xl underline font-bold">Manage Admin</h1>
 
