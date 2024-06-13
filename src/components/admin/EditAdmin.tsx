@@ -49,9 +49,11 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
     }, [admin, reset]);
 
     //for merging the data in table
-    const deepMerge = (target: any, source: any): any => {
+    const deepMerge = (target: any, source: any) => {
         for (const key in source) {
-            if (source[key] && typeof source[key] === 'object') {
+            if (Array.isArray(source[key])) {
+                target[key] = source[key];
+            } else if (source[key] && typeof source[key] === 'object') {
                 if (!target[key]) {
                     target[key] = {};
                 }
@@ -80,7 +82,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
                 phoneNumber: data.details.phoneNumber,
             });
             toast.show({ title: "Success", content: "Edited successfully", duration: 2000, type: 'success' });
-            const UpdatedUserData = deepMerge(admin, data);
+            const UpdatedUserData = deepMerge({ ...admin }, data);
             console.log(data)
             onUpdate(UpdatedUserData);
             onClose();
@@ -102,7 +104,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
             {/* First and Last Name */}
             <div className="flex  gap-x-3">
                 <div>
-                    <Label label="First Name (EN)" name="details.firstName.en" />
+                    <Label label="First Name (EN)" name="details.firstName.en" required={true} />
                     <div className="relative flex items-center ">
                         <FaRegUser className=" absolute left-3  text-gray-500 " />
                         <InputField type="text" name="details.firstName.en" placeholder='First Name' register={register} />
@@ -113,7 +115,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
                 </div>
 
                 <div>
-                    <Label label="First Name (NE)" name="details.firstName.ne" />
+                    <Label label="First Name (NE)" name="details.firstName.ne" required={true} />
                     <div className="relative flex items-center ">
                         <FaRegUser className=" absolute left-3 text-gray-500 " />
                         <InputField type="text" name="details.firstName.ne" placeholder='पहिलो नाम' register={register} />
@@ -129,7 +131,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
             {/* </div> */}
             <div className="flex gap-x-3">
                 <div>
-                    <Label label="Last Name (EN)" name="details.lastName.en" />
+                    <Label label="Last Name (EN)" name="details.lastName.en" required={true} />
                     <div className="relative flex items-center">
                         <FaRegUser className=" absolute left-3 text-gray-500 " />
                         <InputField type="text" name="details.lastName.en" placeholder='Last Name' register={register} />
@@ -140,7 +142,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
                 </div>
 
                 <div>
-                    <Label label="Last Name (NE)" name="details.lastName.ne" />
+                    <Label label="Last Name (NE)" name="details.lastName.ne" required={true} />
                     <div className="relative flex items-center">
                         <FaRegUser className=" absolute left-3 text-gray-500 " />
                         <InputField type="text" name="details.lastName.ne" placeholder='थर' register={register} />
@@ -166,7 +168,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
 
             {/* Phone Number */}
             <div className="relative mb-2">
-                <Label label="Phone Number" name="details.phoneNumber" />
+                <Label label="Phone Number" name="details.phoneNumber" required={true} />
                 <div className="relative flex items-center">
                     <MdOutlineLocalPhone className="absolute left-3 text-gray-500" />
                     <InputField type="tel" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
@@ -182,7 +184,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
             <div className="relative mb-2 flex  gap-3">
 
                 <div>
-                    <Label label="Select Role" name="role" />
+                    <Label label="Select Role" name="role" required={true} />
                     <div>
                         <SelectOption name="role" options={[
                             { value: 'SUDO_ADMIN', label: 'Sudo Admin' },
@@ -194,7 +196,7 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
                     </div>
                 </div>
                 <div className="">
-                    <Label label="Features" name="allowedFeature" />
+                    <Label label="Features" name="allowedFeature" required={true} />
                     <Checkbox name='allowedFeature' options={[
                         { label: 'Setup', value: 'SETUP' },
                         { label: 'Manage Admin', value: 'MANAGE_ADMIN' }
@@ -202,9 +204,6 @@ const EditAdmin = ({ admin, onClose, onUpdate }: EditAdminProps) => {
                         register={register} />
                 </div>
             </div>
-
-
-
 
 
             {/* Create Button */}

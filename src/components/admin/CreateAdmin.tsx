@@ -102,7 +102,7 @@ const CreateAdmin = () => {
                 {/* First Name*/}
                 <div className="flex  gap-x-3">
                     <div>
-                        <Label label="First Name (EN)" name="details.firstName.en" />
+                        <Label label="First Name (EN)" name="details.firstName.en" required={true} />
                         <div className="relative flex items-center ">
                             <FaRegUser className=" absolute left-3  text-gray-500 " />
                             <InputField type="text" name="details.firstName.en" placeholder='First Name' register={register} />
@@ -151,7 +151,7 @@ const CreateAdmin = () => {
 
                 <div className="flex gap-x-3">
                     <div>
-                        <Label label="Last Name (EN)" name="details.lastName.en" />
+                        <Label label="Last Name (EN)" name="details.lastName.en" required={true} />
                         <div className="relative flex items-center">
                             <FaRegUser className=" absolute left-3 text-gray-500 " />
                             <InputField type="text" name="details.lastName.en" placeholder='Last Name' register={register} />
@@ -176,7 +176,7 @@ const CreateAdmin = () => {
 
                 {/* Email */}
                 <div className="relative mb-2">
-                    <Label label="Email" name="email" />
+                    <Label label="Email" name="email" required={true} />
                     <div className="relative flex items-center">
                         <MdOutlineEmail className=" absolute left-3 text-gray-500 " />
                         <InputField type="email" name='email' placeholder='Enter your Email' register={register} />
@@ -188,7 +188,7 @@ const CreateAdmin = () => {
 
                 {/* Phone Number */}
                 <div className="relative mb-2">
-                    <Label label="Phone Number" name="details.phoneNumber" />
+                    <Label label="Phone Number" name="details.phoneNumber" required={true} />
                     <div className="relative flex items-center">
                         <MdOutlineLocalPhone className="absolute left-3 text-gray-500" />
                         <InputField type="tel" name="details.phoneNumber" placeholder='Enter your Phone Number' register={register} />
@@ -204,7 +204,7 @@ const CreateAdmin = () => {
                 <div className="relative mb-2 flex  gap-3">
 
                     <div>
-                        <Label label="Select Role" name="role" />
+                        <Label label="Select Role" name="role" required={true} />
                         <div>
                             <SelectOption name="role" options={[
                                 { value: 'SUDO_ADMIN', label: 'Sudo Admin' },
@@ -217,7 +217,7 @@ const CreateAdmin = () => {
                     </div>
 
                     <div className="">
-                        <Label label="Features" name="allowedFeature" />
+                        <Label label="Features" name="allowedFeature" required={true} />
                         <Checkbox name='allowedFeature' options={[
                             { label: 'Setup', value: 'SETUP' },
                             { label: 'Manage Admin', value: 'MANAGE_ADMIN' }
@@ -227,7 +227,7 @@ const CreateAdmin = () => {
                 </div>
 
                 <div className="relative mb-2">
-                    <Label label="Password" name="firstPassword" />
+                    <Label label="Password" name="firstPassword" required={true} />
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
                         <InputField type="password" name='firstPassword' placeholder='Password' autocomplete="off" register={register} />
@@ -239,7 +239,7 @@ const CreateAdmin = () => {
 
                 {/* Confirm Password */}
                 <div className="relative mb-2">
-                    <Label label="Confirm Password" name="password" />
+                    <Label label="Confirm Password" name="password" required={true} />
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
                         <InputField type="password" name='password' placeholder='Confirm Password' autocomplete="off" register={register} />

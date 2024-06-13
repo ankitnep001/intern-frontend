@@ -66,8 +66,8 @@ const ChangePassword = () => {
                 {/* {errorMessage && <div className="text-red-500 text-sm mb-4">{errorMessage}</div>} */}
                 {/* -------------------------OldPassword------------------------------------- */}
                 <div className=" relative">
-                    <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-                        Old Password:
+                    <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
+                        Old Password<span className="text-red-500">*</span>
                     </label>
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
@@ -93,7 +93,7 @@ const ChangePassword = () => {
                 {/*----------------- NewPassword------------------- */}
                 <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                        New Password:
+                        New Password<span className="text-red-500">*</span>
                     </label>
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
@@ -119,7 +119,7 @@ const ChangePassword = () => {
                     type="submit"
                     className="w-full bg-blue-400 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mt-2"
                 >
-                    Reset
+                    Update
                 </button>
             </div>
         </form>

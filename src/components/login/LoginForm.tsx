@@ -94,7 +94,7 @@ const LoginForm = () => {
 
                 <div className="relative">
                     <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-                        Email
+                        Email<span className="text-red-500">*</span>
                     </label>
                     <div className="relative flex items-center">
                         <MdOutlineEmail className="absolute left-3 text-gray-500" />
@@ -114,7 +114,7 @@ const LoginForm = () => {
 
                 <div className="relative mt-2">
                     <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                        Password
+                        Password<span className="text-red-500">*</span>
                     </label>
                     <div className="relative flex items-center">
                         <RiLockPasswordLine className="absolute left-3 text-gray-500" />
