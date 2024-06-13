@@ -1,66 +1,69 @@
 import { IPagination } from "@interface/global.interface";
-import { useState } from "react";
 import { MdOutlineFirstPage, MdOutlineLastPage } from "react-icons/md";
 
 interface PaginationProps {
-    totalPages: IPagination,
+    totalPages: IPagination;
     setTotalPages: React.Dispatch<React.SetStateAction<IPagination>>;
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
     rowsPerPage: number;
     setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setRefresh, rowsPerPage, setRowsPerPage }) => {
-    const [inputRowPerPage, setInputRowPerPage] = useState(rowsPerPage);
+const options = [
+    { value: '5', label: '5' },
+    { value: '10', label: '10' },
+    { value: '15', label: '15' },
+    { value: '20', label: '20' },
+    { value: '25', label: '25' },
+    { value: '30', label: '30' },
+];
+const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setRefresh, rowsPerPage, setRowsPerPage, }) => {
 
     const handlePrevious = () => {
         if (totalPages.currentPage > 1) {
-            setTotalPages(prev => ({
+            setTotalPages((prev) => ({
                 ...prev,
                 currentPage: prev.currentPage - 1,
             }));
-            setRefresh(prev => !prev);
+            setRefresh((prev) => !prev);
         }
     };
 
     const handleNext = () => {
         if (totalPages.currentPage < totalPages.totalPages) {
-            setTotalPages(prev => ({
+            setTotalPages((prev) => ({
                 ...prev,
                 currentPage: prev.currentPage + 1,
             }));
-            setRefresh(prev => !prev);
+            setRefresh((prev) => !prev);
         }
     };
 
     const handleFirst = () => {
-        setTotalPages(prev => ({
+        setTotalPages((prev) => ({
             ...prev,
             currentPage: 1,
         }));
-        setRefresh(prev => !prev);
+        setRefresh((prev) => !prev);
     };
 
     const handleLast = () => {
-        setTotalPages(prev => ({
+        setTotalPages((prev) => ({
             ...prev,
             currentPage: totalPages.totalPages,
         }));
-        setRefresh(prev => !prev);
+        setRefresh((prev) => !prev);
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputRowPerPage(parseInt(e.target.value));
-    };
-
-    const handleRowsPerPageChange = () => {
-        setRowsPerPage(inputRowPerPage);
-        setRefresh(prevRefresh => !prevRefresh);
+    const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newRowsPerPage = parseInt(event.target.value);
+        setRowsPerPage(newRowsPerPage);
+        setRefresh((prev) => !prev);
     };
 
     const handlePages = (pageNumber: number) => {
         setTotalPages({ ...totalPages, currentPage: pageNumber });
-        setRefresh(prevRefresh => !prevRefresh);
+        setRefresh((prevRefresh) => !prevRefresh);
     };
 
     const renderPageNumbers = () => {
@@ -85,9 +88,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setR
         }
 
         if (startPage > 1) {
-            pageNumbers.unshift(
-                <span key="start" className="px-1">...</span>
-            );
+            pageNumbers.unshift(<span key="start" className="px-1">...</span>);
             pageNumbers.unshift(
                 <button
                     key={1}
@@ -117,30 +118,51 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, setTotalPages, setR
 
     return (
         <div className="flex justify-between items-center px-2 py-2">
-            {/* Rows per page input */}
-            <div className="space-x-2">
-                <input
-                    type="number"
-                    value={inputRowPerPage}
-                    className="border rounded-lg p-1 w-10 text-center"
-                    onChange={handleInputChange}
-                />
-                <button
-                    onClick={handleRowsPerPageChange}
-                    className="bg-blue-500 text-white px-2 py-1 rounded-lg"
+            {/* Rows per page select option */}
+            <div className="flex items-center">
+                <label htmlFor="rowsPerPage" className=" pr-1 focus:outline-none">Rows per page</label>
+                <select
+                    id="rowsPerPage"
+                    value={rowsPerPage}
+                    onChange={handleRowsPerPageChange}
+                    className="border rounded px-2 py-1"
                 >
-                    RowsPerPage
-                </button>
+                    {options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             {/* Pagination controls */}
             <div className="flex flex-col justify-center items-center">
                 <div className="space-x-2 flex">
-                    <button onClick={handleFirst} className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''} `}><MdOutlineFirstPage /></button>
-                    <button onClick={handlePrevious} className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''} `}>-</button>
+                    <button
+                        onClick={handleFirst}
+                        className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''}`}
+                    >
+                        <MdOutlineFirstPage />
+                    </button>
+                    <button
+                        onClick={handlePrevious}
+                        className={`border-2 border-black px-2 ${totalPages.currentPage === 1 ? 'cursor-not-allowed' : ''}`}
+                    >
+                        -
+                    </button>
                     {renderPageNumbers()}
-                    <button onClick={handleNext} className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''} `}>+</button>
-                    <button onClick={handleLast} className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''} `}><MdOutlineLastPage /></button>
+                    <button
+                        onClick={handleNext}
+                        className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''}`}
+                    >
+                        +
+                    </button>
+                    <button
+                        onClick={handleLast}
+                        className={`border-2 border-black px-2 ${totalPages.currentPage === totalPages.totalPages ? 'cursor-not-allowed' : ''}`}
+                    >
+                        <MdOutlineLastPage />
+                    </button>
                 </div>
                 <div>
                     <span>{`Page ${totalPages.currentPage} of ${totalPages.totalPages}`}</span>
