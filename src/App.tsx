@@ -22,7 +22,7 @@ const router = createBrowserRouter([{
   element: <ProtectedRoute />,
   children: [
     { index: true, element: <AdminDashboard /> },
-    { path: 'manage_admin', element: <ManageAdmin /> },
+    { path: 'manage-admin', element: <ManageAdmin /> },
     { path: 'changepassword', element: <ChangePassword /> },
 
 

@@ -27,7 +27,7 @@ const ViewDetails: React.FC<ViewDetailsProps> = ({ adminId }) => {
         <div className="w-full flex flex-col justify-center items-center">
             <h1 className="text-3xl mb-3 font-bold underline">Admin Details</h1>
             {adminDetail ? (
-                <div className="bg-blue-300 shadow-md rounded-lg p-6 w-full max-w-md">
+                <div className="border-2  shadow-md rounded-lg p-6 w-full max-w-md">
                     <p className="p-2">Username: {adminDetail.username}</p>
                     <p className="p-2">Email: {adminDetail.email}</p>
                     <p className="p-2">Role: {adminDetail.role.toString().toLowerCase()}</p>

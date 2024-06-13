@@ -9,12 +9,12 @@ interface CheckboxProps {
 }
 const Checkbox: React.FC<CheckboxProps> = ({ name, options, register }) => {
     return (
-        <div className=''>
+        <div >
             {/* <label>{label}</label> */}
-            <div className=''>
+            <div >
                 {options.map((option) => (
                     <div key={option.value} >
-                        <label className=''>
+                        <label>
                             <input
                                 type="checkbox"
                                 value={option.value}
