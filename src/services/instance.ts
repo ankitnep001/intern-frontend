@@ -6,10 +6,11 @@ const axiosInstance: AxiosInstance = axios.create({
     timeout: import.meta.env.TIME_OUT,
 });
 
-
+const token = encryptDecrypt.decrypt(localStorage.getItem('accessTokenInternProject') as string) || encryptDecrypt.decrypt(sessionStorage.getItem('accessTokenInternProject') as string)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 axiosInstance.interceptors.request.use(async (config: any) => {
-    config.headers.Authorization = `Bearer ${encryptDecrypt.decrypt(localStorage.getItem("accessTokenInternProject") as string)}`
+
+    config.headers.Authorization = `Bearer ${token}`
     return config
 })
 

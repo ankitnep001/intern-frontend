@@ -81,7 +81,7 @@ const LoginForm = () => {
             toast.show({ title: "Success", content: "Login successfully", duration: 2000, type: 'success' });
             navigate('/admin', { replace: true });
         } catch (error) {
-            console.log(error, 'error in auth google')
+            console.log(error, 'error while login with google')
         }
     }
 
