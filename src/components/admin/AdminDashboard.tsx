@@ -1,12 +1,12 @@
+import BarGraph from "@utils/themes/components/BarGraph"
+import PieChart from "@utils/themes/components/PieChart"
 
 const AdminDashboard = () => {
+
     return (
-        <div >
-            <div className="flex justify-between items-center">
-                <p>Sudo Admins:1</p>
-                <p>Admins:2</p>
-                <p>Total Users: 5</p>
-            </div>
+        <div className="h-full flex  ml-10 items-center" >
+            <BarGraph />
+            <PieChart />
         </div>
     )
 }
