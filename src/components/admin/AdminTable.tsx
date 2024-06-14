@@ -8,6 +8,7 @@ import { FaSearch, FaWindowClose } from "react-icons/fa";
 import { MdArrowDropDown, MdArrowDropUp, MdDeleteOutline } from "react-icons/md";
 import { RiExpandUpDownFill } from "react-icons/ri";
 
+import MediaUpload from "@utils/themes/components/MediaUpload";
 import EditAdmin from "./EditAdmin";
 import Pagination from "./Pagination";
 import ViewDetails from "./ViewDetails";
@@ -199,6 +200,9 @@ const AdminTable = () => {
                 setRowsPerPage={setRowsPerPage}
                 setRefresh={setRefresh}
             />
+            <div className="p-2">
+                <MediaUpload />
+            </div>
         </div>
     );
 };

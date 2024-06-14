@@ -93,11 +93,11 @@ const CreateAdmin = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}
             className=" flex justify-center items-center  w-full md:mt-3 bg-slate-100" noValidate>
-            <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg p-6 w-full max-w-md ">
+            <div className="flex flex-col bg-[#fefeff] shadow-md rounded-lg px-6  ">
                 <div className="text-end" onClick={() => reset()}>
                     <button><GrPowerReset /></button>
                 </div>
-                <h1 className="text-center text-2xl font-bold mb-4">Create Account</h1>
+                <h1 className="text-center text-xl font-bold mb-4">Create Account</h1>
 
                 {/* First Name*/}
                 <div className="flex  gap-x-3">
@@ -201,7 +201,7 @@ const CreateAdmin = () => {
                 {/* Role and allowedFeature */}
 
                 {/* allowed Features */}
-                <div className="relative mb-2 flex  gap-3">
+                <div className="relative mb-2 flex   gap-3">
 
                     <div>
                         <Label label="Select Role" name="role" required={true} />
